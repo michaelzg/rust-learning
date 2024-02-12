@@ -1,18 +1,8 @@
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
-
-async fn greet(req: HttpRequest) -> impl Responder {
-    let name = req.match_info().get("name").unwrap_or("world");
-    format!("Hello {}", name)
-}
+use api_actix::run;
+use std::net::TcpListener;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    HttpServer::new(|| {
-        App::new()
-            .route("/", web::get().to(greet))
-            .route("/{name}", web::get().to(greet))
-    })
-    .bind("localhost:8000")?
-    .run()
-    .await
+    let listener = TcpListener::bind("localhost:8000").expect("failed to bind");
+    run(listener).expect("run failed").await
 }
