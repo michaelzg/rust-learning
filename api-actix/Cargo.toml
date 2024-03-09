@@ -16,3 +16,7 @@ tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 
 [dev-dependencies]
 reqwest = "0.11"
+
+# On MacOS, `brew install llvm` and follow steps in `brew info llvm`
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]
